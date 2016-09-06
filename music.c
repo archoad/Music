@@ -90,7 +90,7 @@ FILE *initiateWavFile(char *filename) {
 	strncpy(header.dataID, "data", 4);
 	header.dataSize = 0;
 
-	file = fopen(filename,"w+");
+	file = fopen(filename, "w+");
 	fwrite(&header, sizeof(header), 1, file);
 	fflush(file);
 	return file;
@@ -323,7 +323,7 @@ int main(int argc, char *argv[]) {
 	switch (argc) {
 		case 2:
 			srand(time(NULL));
-			createWavFile(argv[1]);
+			//createWavFile(argv[1]);
 			readWavFile(argv[1]);
 			playWavFile(argv[1]);
 			exit(EXIT_SUCCESS);

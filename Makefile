@@ -1,6 +1,6 @@
 # définition des cibles particulières
 .PHONY: clean, mrproper
-  
+
 # désactivation des règles implicites
 .SUFFIXES:
 
@@ -11,7 +11,7 @@ PKG_CFLAG:=$(shell pkg-config --cflags libavutil)
 CC=gcc
 CL=clang
 STRIP=strip
-CFLAGS= -O3 -Wall -W -Wstrict-prototypes -Werror
+CFLAGS= -O3 -Wall -W -Wstrict-prototypes -Werror -Wextra -Wuninitialized
 ifeq ($(UNAME_S),Linux)
 	IFLAGSDIR= -I/usr/include
 	LFLAGSDIR= -L/usr/lib
@@ -43,4 +43,3 @@ dest_sys:
 clean:
 	@rm -f music
 	@rm -f visualize3d
-

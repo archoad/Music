@@ -25,15 +25,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.*/
 #include <math.h>
 #include <png.h>
 
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
+#include <GL/freeglut.h>
 
 #define WINDOW_TITLE_PREFIX "Visualize Sound"
 #define couleur(param) printf("\033[%sm",param)
 
-static short winSizeW = 800,
-	winSizeH = 600,
+static short winSizeW = 920,
+	winSizeH = 690,
 	frame = 0,
 	currentTime = 0,
 	timebase = 0,
@@ -368,9 +366,9 @@ void onKeyboard(unsigned char key, int x, int y) {
 	char *name = malloc(20 * sizeof(char));
 	switch (key) {
 		case 27: // Escape
-			printf("INFO: exit\n");
 			printf("x %d, y %d\n", x, y);
-			exit(0);
+			printf("INFO: exit loop\n");
+			glutLeaveMainLoop();
 			break;
 		case 'x':
 			xx += 1.0;
@@ -495,7 +493,7 @@ void init(void) {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	
+
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
 
@@ -520,7 +518,7 @@ void init(void) {
 void glmain(int argc, char *argv[]) {
 	glutInit(&argc, argv);
 	glutInitWindowSize(winSizeW, winSizeH);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(120, 10);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow(WINDOW_TITLE_PREFIX);
 	init();
@@ -532,9 +530,12 @@ void glmain(int argc, char *argv[]) {
 	glutMouseFunc(onMouse);
 	glutKeyboardFunc(onKeyboard);
 	glutTimerFunc(dt, onTimer, 0);
-	printf("INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
-	printf("INFO: Nbr elts: %d\n", sampleSize);
+	fprintf(stdout, "INFO: OpenGL Version: %s\n", glGetString(GL_VERSION));
+	fprintf(stdout, "INFO: FreeGLUT Version: %d\n", glutGet(GLUT_VERSION));
+	fprintf(stdout, "INFO: Nbr elts: %d\n", sampleSize);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glutMainLoop();
+	fprintf(stdout, "INFO: Freeing memory\n");
 	glDeleteLists(textList, 1);
 	glDeleteLists(objectList, 1);
 }
@@ -567,7 +568,7 @@ void populatePoints(short tab_left[], short tab_right[]) {
 
 	color_left = (color*)calloc(1, sizeof(color));
 	color_right = (color*)calloc(1, sizeof(color));
-	
+
 	if ((pointsList_left == NULL) || (pointsList_right == NULL) || (pointsList == NULL)) {
 		printf("### ERROR\n");
 		return;
@@ -683,9 +684,6 @@ int main(int argc, char *argv[]) {
 		default:
 			usage();
 			exit(EXIT_FAILURE);
-			break;	
+			break;
 	}
 }
-
-
-
